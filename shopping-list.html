@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping List App</title>
+    <style>
+        ul {
+            list-style-type: "\2610 ";
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>My Shopping List</h1>
+    <form id="myForm">
+        <label for="item">Add an item:</label>
+        <input id="item" type="text" name="item">
+        <button onclick="getItem()">Add</button>
+    </form>
+    <ul id="shoppingList">
+        <!-- list items will go into this ul via DOM manipulation -->
+    </ul>
+    <script>
+
+        const groceryList = []; //create empty array to iterate on
+        const shoppingList = document.querySelector('#shoppingList');
+
+        function getItem() { // create function to get item and put them in an array (but not if item is already in array)
+            event.preventDefault(); // no reload from form
+
+            const item = document.getElementById("item").value; //we don't want the node, but the node.value
+            if (groceryList.includes(item)) { //if item already is in the array, stops and tell user why
+                alert(`${item} is already in the list.`);
+                document.getElementById("myForm").reset(); // empties the input
+                return;
+            }
+            groceryList.push(item);
+            groceryList.sort();
+            removeList(); // clears the list on each new item added
+            makeList(); // create the list on each new item added
+            document.getElementById("myForm").reset(); // empties the input
+        }
+
+        function makeList(){
+            for(let entry of groceryList){ // goes through each item in the array
+                listItem = document.createElement('li'); // creates 1 <li> node per item in the array
+                listItem.textContent = entry; // add the text associated with each li node
+                shoppingList.appendChild(listItem); // add the new nodes (li) to the shoppingList branch
+            }
+        }
+
+        function removeList() { // to clear the list everytime a new item is added. Otherwise, the list is repeated everytime
+            while(shoppingList.firstChild){
+                shoppingList.removeChild(shoppingList.firstChild);
+            }
+        }
+
+
+
+
+
+
+
+//Code below works, but doesnt create array.
+/* const itemInput = document.querySelector('#item');
+        const shoppingList = document.querySelector('#shoppingList');
+        const button = document.querySelector('button'); */
+/*         button.addEventListener('click', function(event){
+            event.preventDefault(); // stops the page reloading from the form
+
+            const itemText = itemInput.value;
+
+            if(itemText !== ""){
+                const newItem = document.createElement('li');
+                newItem.textContent = itemText;
+                shoppingList.appendChild(newItem);
+                itemInput.value = "";
+            }
+        }); */
+
+    </script>
+</body>
+</html>
